@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.lab11.model.Food;
+import com.example.lab11.model.MyChat;
 
 import java.util.List;
 
@@ -19,12 +19,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // ประกาศ global variables เพื่อใช้งาน
     //
-    private List<Food> values;
+    private List<MyChat> values;
     private Context context;    // หมายถึง MainActivity context ที่ส่งมาตอนเรียกใช้ MyAdapter
 
     // constructor ของ MyAdapter ทำหน้าที่นำค่าที่ได้รับมาตอนถูกสร้างที่ MainActivity มาเก็บไว้ที่ global variables
     //
-    public MyAdapter(List<Food> values, Context context) {
+    public MyAdapter(List<MyChat> values, Context context) {
         this.values = values;
         this.context = context;
     }
@@ -64,20 +64,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        final Food food = values.get(position);
-        holder.txtHeader.setText(food.getFood_name());
-        holder.txtFooter.setText(food.getFood_price() + " บาท");
+        final MyChat myChat = values.get(position);
+        holder.txtHeader.setText(myChat.getFriend_name());
+        holder.txtFooter.setText(myChat.getFriend_phone_number() );
 
         //ใช้ Glide ในการแสดงภาพบน ImageView  ซึ่งอาจจะใช้ Picasso แทนก็ได้
         //
         Glide.with(context)
-                .load(food.getFood_image())
+                .load(myChat.getFriend_image())
                 .into(holder.imgView);
         holder.imgView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Toast toast = Toast.makeText(context,
-                        food.getFood_name(),
+                        myChat.getFriend_name(),
                         Toast.LENGTH_SHORT);
                 toast.show();
 
