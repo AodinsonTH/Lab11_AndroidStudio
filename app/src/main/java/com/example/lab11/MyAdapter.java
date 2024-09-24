@@ -2,6 +2,7 @@ package com.example.lab11;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,22 +17,16 @@ import com.example.lab11.model.MyChat;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-
-    // ประกาศ global variables เพื่อใช้งาน
-    //
     private List<MyChat> values;
     private Context context;    // หมายถึง MainActivity context ที่ส่งมาตอนเรียกใช้ MyAdapter
 
     // constructor ของ MyAdapter ทำหน้าที่นำค่าที่ได้รับมาตอนถูกสร้างที่ MainActivity มาเก็บไว้ที่ global variables
-    //
     public MyAdapter(List<MyChat> values, Context context) {
         this.values = values;
         this.context = context;
     }
 
-    // ********
-    // INNER class ViewHolder extends RecyclerView.ViewHolder คือชิ้นส่วนแต่ละอันที่จะแสดงข้อมูลอาหาร 1 อย่าง
-    //
+    // INNER class ViewHolder คือชิ้นส่วนแต่ละอันที่จะแสดงข้อมูลอาหาร 1 อย่าง
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imgView;
@@ -60,36 +55,33 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // เมื่อมีการ bind ViewHolder เข้ากับ RecyclerView ให้กำหนดค่าที่ ImageView และ 2 TextView เป็นภาพ ชื่อ และราคาอาหาร
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         final MyChat myChat = values.get(position);
         holder.txtHeader.setText(myChat.getFriend_name());
-        holder.txtFooter.setText(myChat.getFriend_phone_number() );
+        holder.txtFooter.setText(myChat.getFriend_phone_number());
 
-        //ใช้ Glide ในการแสดงภาพบน ImageView  ซึ่งอาจจะใช้ Picasso แทนก็ได้
-        //
+        // ใช้ Glide ในการแสดงภาพบน ImageView ซึ่งอาจจะใช้ Picasso แทนก็ได้
         Glide.with(context)
                 .load(myChat.getFriend_image())
                 .into(holder.imgView);
-        holder.imgView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(context,
-                        myChat.getFriend_name(),
-                        Toast.LENGTH_SHORT);
-                toast.show();
 
-            }
+        holder.imgView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Detail_Activity.class);
+            intent.putExtra("name", myChat.getFriend_name());
+            intent.putExtra("image", myChat.getFriend_image());
+            intent.putExtra("tel", myChat.getFriend_phone_number());
+            intent.putExtra("DOB", myChat.getFriend_dob());
+            intent.putExtra("address", myChat.getFriend_address());
+            intent.putExtra("STD_ID", myChat.getFriend_stdid());
+
+            context.startActivity(intent);
         });
-
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return values.size();
     }
-
 }
