@@ -39,8 +39,7 @@ public class Detail_Activity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.image);
         Glide.with(this) // Use 'this' for context
                 .load(img) // Load image from 'img'
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .error(R.drawable.ic_launcher_background)
+
                 .into(imageView);
 
         TextView textView = findViewById(R.id.name);
